@@ -29,8 +29,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 #region Servicios
 
 
-string? basePath = Directory.GetParent(".")?.FullName;
-builder.Configuration.SetBasePath(basePath!).AddJsonFile("appsettingsapishared.json");
+builder.Configuration.AddJsonFile("appsettingsapishared.json", optional: false);
 
 string allowedOrigins = builder.Configuration.GetSection("AppSettings").GetSection("AllowedHosts").Value!;
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(config =>
