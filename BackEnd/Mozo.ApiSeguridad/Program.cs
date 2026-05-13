@@ -39,6 +39,13 @@ builder.Services.AddCors(opt => opt.AddDefaultPolicy(config =>
     .AllowAnyMethod();
 }));
 
+
+var storage = builder.Configuration.GetSection("Storage");
+
+Directory.CreateDirectory(storage["FolderDocument"]!);
+Directory.CreateDirectory(storage["FolderResource"]!);
+Directory.CreateDirectory(storage["FolderTemporary"]!);
+
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddEndpointsMetadataProviderApiExplorer();
 builder.Services.AddSwaggerGen(c =>
