@@ -1,0 +1,51 @@
+<label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+
+<div class="flex min-h-full flex-col bg-base-200 border-r border-base-300
+            is-drawer-close:w-16
+            is-drawer-open:w-64
+            transition-all duration-300">
+
+  <ul class="menu w-full p-2 gap-1 is-drawer-close:space-y-0">
+    <li>
+      <a routerLink="home" routerLinkActive="active" class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+        data-tip="Homepage">
+        <!-- Home icon -->
+        <ng-icon name="lucideHome" class="text-2xl text-primary" />
+        <span class="is-drawer-close:hidden">Principal</span>
+      </a>
+    </li>
+
+    @for(modulo of modulos(); track $index) {
+    <li class="text-zinc-500">
+      <div class="is-drawer-close:tooltip is-drawer-close:tooltip-right" [attr.data-tip]="modulo.noModulo">
+        <ng-icon [name]="modulo.noIcono" class="text-2xl text-primary" />
+        <span class="is-drawer-close:hidden pl-2">{{ modulo.noModulo }}</span>
+      </div>
+    </li>
+    <li class="is-drawer-close:hidden">
+      @for (menu of modulo.menuLst; track $index) {
+      <details class="group is-drawer-close:hidden">
+        <summary class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-base-300">
+          <ng-icon name="lucideMenu" class="text-1xl text-primary" />
+          <span class="flex-1 text-left">
+            {{ menu.noMenu }}
+          </span>
+        </summary>
+        <ul class="mt-1 ml-4 border-l border-base-300 pl-2">
+          @for (pagina of menu.paginaLst; track $index) {
+          <li>
+            <a [routerLink]="['/', pagina.noArea, pagina.noControlador]"
+            routerLinkActive="menu-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+              class="rounded-md">
+              {{ pagina.noOpcion }}
+            </a>
+          </li>
+          }
+        </ul>
+      </details>
+      }
+    </li>
+    }
+  </ul>
+</div>

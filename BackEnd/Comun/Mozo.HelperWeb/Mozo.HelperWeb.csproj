@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Http\**" />
+    <Compile Remove="LoggerManager\**" />
+    <Compile Remove="LlogerManager\**" />
+    <Compile Remove="Log\**" />
+    <Compile Remove="Verify\**" />
+    <EmbeddedResource Remove="Http\**" />
+    <EmbeddedResource Remove="LoggerManager\**" />
+    <EmbeddedResource Remove="LlogerManager\**" />
+    <EmbeddedResource Remove="Log\**" />
+    <EmbeddedResource Remove="Verify\**" />
+    <None Remove="Http\**" />
+    <None Remove="LoggerManager\**" />
+    <None Remove="LlogerManager\**" />
+    <None Remove="Log\**" />
+    <None Remove="Verify\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Api\Accessor.cs" />
+    <Compile Remove="Api\ApiFilterAction.cs" />
+    <Compile Remove="Api\BaseApiController.cs" />
+    <Compile Remove="Api\ConfigStartupApi.cs" />
+    <Compile Remove="Api\Extension.cs" />
+    <Compile Remove="Authentication.cs" />
+    <Compile Remove="CustomErrorHandlerHelper.cs" />
+    <Compile Remove="EmailSender .cs" />
+    <Compile Remove="FileManage.cs" />
+    <Compile Remove="Yo - Copia.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.7" />
+    <PackageReference Include="System.Runtime.Caching" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mozo.Helper\Mozo.Helper.csproj" />
+    <ProjectReference Include="..\Mozo.Model\Mozo.Model.csproj" />
+  </ItemGroup>
+
+</Project>

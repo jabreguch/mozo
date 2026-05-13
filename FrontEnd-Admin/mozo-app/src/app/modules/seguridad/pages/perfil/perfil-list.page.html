@@ -1,0 +1,55 @@
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Mantenimiento de Perfiles y accesos</h1>
+  <mz-button-control type="submit" [view]="MenuControlTypeEnum.New" (click)="onMenuAction('insert', null)" />
+</div>
+
+<div class="grid grid-cols-1 gap-4">
+  <mz-form-field-control label="Módulo">
+    <select class="select select-bordered w-full" [ngModel]="selectedModulo()" (ngModelChange)="onModuloChange($event)">
+
+      <option [value]="null" disabled selected>
+        {{ MSG_FIELD_FORM.COMBO_REQUIRED }}
+      </option>
+
+      @for (item of modulos(); track item.coModulo) {
+      <option [value]="item.coModulo">{{ item.noModulo }}</option>
+      }
+    </select>
+  </mz-form-field-control>
+</div>
+
+@if(perfiles().length > 0) {
+<table class="table table-zebra">
+  <thead>
+    <tr>
+      <th>Perfil</th>
+      <th class="w-40"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (perfil of perfiles(); track perfil.coPerfil) {
+    <tr>
+      <td>
+        <mz-state-control [state]="perfil.flEstReg == 1 ? 1 : 0" /> {{ perfil.noPerfil }} <mz-default-control
+          [default]="perfil.flDefault == 1 ? 1 : 0" />
+      </td>
+      <td>
+        <mz-menu-control [items]="menuItems" [state]="perfil.flEstReg ?? null"
+          (action)="onMenuAction($event, perfil)" />
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+}
+
+<mz-modal-control name="perfil-form-page-modal" #perfilFormPageModal>
+  <mz-perfil-form-page (saved)="onSaved()" [data]="perfilFormPageModal.data$()" />
+</mz-modal-control>
+
+
+<mz-modal-control name="perfil-pagina-form-page-modal" #perfilPaginaFormPageModal>
+  <mz-perfil-pagina-form-page (saved)="onSaved()" [data]="perfilPaginaFormPageModal.data$()" />
+</mz-modal-control>
+

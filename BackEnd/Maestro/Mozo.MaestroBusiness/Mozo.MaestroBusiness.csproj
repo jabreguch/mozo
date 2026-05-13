@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Mappers\GlobalSesionMapper.cs" />
+		<Compile Remove="Report\TipoBusiness.cs" />
+		<Compile Remove="UbigeoBusiness.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Report\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Comun\Mozo.Helper\Mozo.Helper.csproj" />
+	  <ProjectReference Include="..\Mozo.MaestroData\Mozo.MaestroData.csproj" />
+	</ItemGroup>
+
+</Project>

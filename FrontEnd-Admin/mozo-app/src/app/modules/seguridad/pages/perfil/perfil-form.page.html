@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="grid grid-cols-12  gap-4">
+
+    <mz-form-field-control [readonly]="true" label="Módulo" >
+      <input type="text" readonly placeholder="Módulo" class="input w-full" [value]="modulo()?.noModulo" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Perfil" [errorMessage]="getError('noPerfil') ? 'El Perfil es obligatorio.' : null">
+      <input type="text" required maxlength="100" placeholder="Perfil" class="input w-full validator" formControlName="noPerfil" id="noPerfil" />
+    </mz-form-field-control>
+
+    <div>
+      <label class="label cursor-pointer justify-start gap-3">
+        <span class="label-text">Por defecto</span>
+        <input type="checkbox" class="toggle toggle-primary" formControlName="flDefault" />
+      </label>
+    </div>
+  </div>
+
+
+  <div class="modal-action">
+    <mz-button-control [view]="MenuControlTypeEnum.Cancel" (click)="modalService.close()" />
+    <mz-button-control type="submit" shortcut="ctrl+s" [view]="MenuControlTypeEnum.Save" />
+  </div>
+
+</form>

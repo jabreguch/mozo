@@ -1,0 +1,13 @@
+# Angular
+node_modules/
+dist/
+.angular/
+*.log
+
+# Environment
+.env
+.env.local
+
+# IDEs (si ya está en raíz, opcional aquí)
+.vscode/
+.cursor/

@@ -1,0 +1,27 @@
+
+@if (isOpen()) {
+  <dialog class="modal modal-open" role="dialog" [attr.aria-modal]="true">
+    <div
+      class="modal-box w-full modalWidthClass()"
+      [ngClass]="modalWidthClass()"
+      (click)="$event.stopPropagation()">
+
+      <form method="dialog" class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">{{ title$() }}</h1>
+        <button
+          type="button"
+          (click)="close()"
+          class="btn btn-sm btn-circle btn-ghost"
+          aria-label="Cerrar modal">
+          ✕
+        </button>
+      </form>
+
+      <div class="modal-content">
+        <ng-content />
+      </div>
+    </div>
+
+
+  </dialog>
+}

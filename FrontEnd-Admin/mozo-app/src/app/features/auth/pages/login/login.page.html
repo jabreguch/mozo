@@ -1,0 +1,56 @@
+<form [formGroup]="form" (ngSubmit)="onSave()" autocomplete="on">
+  <div class="grid gap-4">
+    <div>
+      <label for="noUsuarioInput" class="floating-label">
+        <span class="label-text">Usuario o correo</span>
+        <input #noUsuarioInput
+          id="noUsuario"
+          type="text"
+          formControlName="noUsuario"
+          class="input validator"
+          minlength="3"
+          maxlength="80"
+          required
+          autocomplete="username"
+          [attr.aria-invalid]="!!getError('noUsuario')"
+          placeholder="Usuario o correo" />
+      </label>
+      @if (getError('noUsuario')) {
+        <p class="text-red-500 text-sm mt-1" aria-live="polite">
+          Usuario inválido
+        </p>
+      }
+    </div>
+
+    <div>
+      <label for="noClaveInput" class="floating-label">
+        <span class="label-text">Clave</span>
+        <input
+          id="noClaveInput"
+          type="password"
+          class="input validator"
+          placeholder="Clave"
+          formControlName="noClave"
+          minlength="4"
+          maxlength="50"
+          required
+          autocomplete="current-password"
+          [attr.aria-invalid]="!!getError('noClave')" />
+      </label>
+      @if (getError('noClave')) {
+        <p class="text-red-500 text-sm mt-1" aria-live="polite">
+          Clave inválida
+        </p>
+      }
+    </div>
+
+    <div class="modal-action flex items-center justify-end gap-2 mt-6">
+      <button type="button" class="btn btn-ghost" (click)="modalService.close()">
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-neutral" [disabled]="form.invalid">
+         Ingresar
+      </button>
+    </div>
+  </div>
+</form>

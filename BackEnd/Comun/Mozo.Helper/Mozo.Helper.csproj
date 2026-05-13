@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pagination\**" />
+    <EmbeddedResource Remove="Pagination\**" />
+    <None Remove="Pagination\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Enu\EnuBoga.cs" />
+    <Compile Remove="Enu\EnuBogaExt.cs" />
+    <Compile Remove="Enu\EnuCondominio.cs" />
+    <Compile Remove="Enu\EnuContabilidad.cs" />
+    <Compile Remove="Enu\EnuEmpresa.cs" />
+    <Compile Remove="Enu\EnuGasto.cs" />
+    <Compile Remove="Enu\EnuMaestro.cs" />
+    <Compile Remove="Enu\EnuUrbano.cs" />
+    <Compile Remove="Global\GlobalSessionMarketinkgModel.cs" />
+    <Compile Remove="Global\GloCapcha.cs" />
+    <Compile Remove="Global\GloFile.cs" />
+    <Compile Remove="Global\GloSession.cs" />
+    <Compile Remove="Services\Storage\FileValidator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.72" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+  </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="grid grid-cols-12 gap-4">
+
+    <mz-form-field-control [readonly]="true" label="Módulo">
+      <input type="text" readonly placeholder="Módulo" class="input w-full" [value]="modulo()?.noModulo" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Orden" [colSpan]="3" [errorMessage]="getError('nuOrden') ? 'El orden es obligatorio.' : null">
+      <input type="number" required maxlength="2" placeholder="Orden" class="input w-full validator" formControlName="nuOrden" id="nuOrden" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Menú" [colSpan]="9" [errorMessage]="getError('noMenu') ? 'El Menú es obligatorio.' : null">
+      <input type="text" maxlength="80" required placeholder="Menú" class="input w-full validator" formControlName="noMenu" id="noMenu" />
+    </mz-form-field-control>
+
+  </div>
+
+
+  <div class="modal-action">
+    <mz-button-control [view]="MenuControlTypeEnum.Cancel" (click)="modalService.close()" />
+    <mz-button-control type="submit" shortcut="ctrl+s" [view]="MenuControlTypeEnum.Save" />
+  </div>
+
+</form>

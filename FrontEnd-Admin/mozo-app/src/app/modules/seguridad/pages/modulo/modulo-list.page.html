@@ -1,0 +1,41 @@
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Mantenimiento de Módulos</h1>
+
+   <mz-button-control
+        type="submit"
+        [view]="MenuControlTypeEnum.New"
+        (click)="onMenuAction('insert', null)"
+      />
+</div>
+
+<table class="table table-zebra">
+  <thead>
+    <tr>
+      <th class="w-10">Orden</th>
+      <th class="w-10">Id</th>
+      <th>Módulo</th>
+      <th class="w-40"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (modulo of modulos(); track modulo.coModulo) {
+    <tr>
+      <td>{{ modulo.nuOrden }}</td>
+       <td>
+        {{ modulo.coModulo }}
+      </td>
+      <td>
+        <mz-state-control [state]="modulo.flEstReg == 1 ? 1 : 0" /> {{ modulo.noModulo }}
+      </td>
+      <td>
+        <mz-menu-control [items]="menuItems" [state]="modulo.flEstReg ?? null" (action)="onMenuAction($event, modulo)" />
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<mz-modal-control name="modulo-form-page" #moduloModal>
+  <mz-modulo-form-page (saved)="onSaved(moduloModal.data$())" [data]="moduloModal.data$()" />
+</mz-modal-control>

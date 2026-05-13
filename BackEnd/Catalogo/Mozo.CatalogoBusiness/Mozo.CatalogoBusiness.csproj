@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ProductoindexBusiness.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Comun\Mozo.Model\Mozo.Model.csproj" />
+    <ProjectReference Include="..\Mozo.CatalogoData\Mozo.CatalogoData.csproj" />
+  </ItemGroup>
+
+</Project>

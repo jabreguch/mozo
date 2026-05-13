@@ -1,0 +1,15 @@
+<label class="floating-label w-full" [class.text-gray-400]="readonly()">
+  <span class="label-text">
+    {{ label() }}
+  </span>
+
+  <ng-content></ng-content>
+</label>
+
+@if (errorMessage()) {
+  <span class="text-error text-sm">{{ errorMessage() }}</span>
+}
+
+@if (hint()) {
+  <span class="label-text-alt">{{ hint() }}</span>
+}

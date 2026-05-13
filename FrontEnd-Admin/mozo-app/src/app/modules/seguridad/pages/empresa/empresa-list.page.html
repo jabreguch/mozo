@@ -1,0 +1,42 @@
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Mantenimiento de Empresas</h1>
+
+  <mz-button-control type="submit" [view]="MenuControlTypeEnum.New" (click)="onMenuAction('insert', null)" />
+</div>
+
+<table class="table table-zebra">
+  <thead>
+    <tr>
+      <th class="w-10">Id</th>
+      <th>Empresa</th>
+      <th>Nombre corto</th>
+      <th>Módulos</th>
+      <th class="w-40"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (empresa of empresas(); track empresa.coEmpresa) {
+    <tr>
+      <td>{{ empresa.coEmpresa }}</td>
+      <td>
+        <mz-state-control [state]="empresa.flEstReg == 1 ? 1 : 0" /> {{ empresa.noEmpresa }}
+      </td>
+      <td>{{ empresa.noEmpresaCorto }}</td>
+      <td>
+        {{ getModulosTexto(empresa.coEmpresa!) }}
+      </td>
+      <td>
+        <mz-menu-control [items]="menuItems" [state]="empresa.flEstReg ?? null"
+          (action)="onMenuAction($event, empresa)" />
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+<mz-pagination-control [page]="pageIndex()" [totalPages]="pageCount" (change)="goToPage($event)">
+</mz-pagination-control>
+
+<mz-modal-control name="empresa-form-page" #empresaModal>
+  <mz-empresa-form-page (saved)="onSaved(empresaModal.data$())" [data]="empresaModal.data$()" />
+</mz-modal-control>

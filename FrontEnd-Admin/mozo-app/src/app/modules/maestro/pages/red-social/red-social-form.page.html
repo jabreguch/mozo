@@ -1,0 +1,128 @@
+<!-- Sección por cada tipo -->
+@for (seccion of secciones; track seccion.coTipo) {
+<div class="mb-4">
+  <div class="flex items-center justify-between mb-2">
+    <h3 class="font-semibold text-sm">{{ seccion.noTipo }}</h3>
+    <mz-button-control tabindex="0" role="button" type="button" [view]="MenuControlTypeEnum.New" label=""
+      moreClass="btn-sm btn-circle gap-1" (click)="agregarFila(seccion.coTipo)" />
+  </div>
+
+  <table class="table table-zebra table-xs">
+    <thead>
+      <tr>
+        <th>Etiqueta</th>
+        <th>Valor</th>
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.redSocial) {
+        <th>Tipo URL</th>
+        }
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.telefonoMovil) {
+        <th>WhatsApp</th>
+        }
+        <th class="w-20"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of getItemsPorTipo(seccion.coTipo); track item.coRedSocial ?? item._tempId) {
+
+      @if (editandoId() === item._tempId || editandoId() === item.coRedSocial) {
+      <!-- ← FILA EN EDICIÓN -->
+      <tr class="bg-base-200">
+        <td>
+          <select class="select select-xs w-full" [(ngModel)]="item.coEtiqueta">
+            @for (e of etiquetas(); track e.coTipo) {
+            <option [value]="e.coTipo">{{ e.noTipo }}</option>
+            }
+          </select>
+        </td>
+        <td>
+          <input class="input input-xs w-full" [(ngModel)]="item.noRedSocial" placeholder="Valor..." />
+        </td>
+
+
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.redSocial) {
+        <td>
+          <select class="select select-xs w-full" [(ngModel)]="item.coTipoUrl">
+            @for (t of tiposUrl(); track t.coTipo) {
+            <option [value]="t.coTipo">{{ t.noTipo }}</option>
+            }
+          </select>
+        </td>
+        }
+
+
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.telefonoMovil) {
+        <td>
+          <input type="checkbox" class="checkbox checkbox-xs" [checked]="item.flWhatsapp === 1"
+            (change)="item.flWhatsapp = $any($event.target).checked ? 1 : 0" />
+        </td>
+        }
+        <td class="flex gap-1">
+
+          <mz-button-control type="button" [view]="MenuControlTypeEnum.Save" label="" moreClass="btn-xs gap-1"
+            (click)="guardarFila(item)" />
+
+
+          <mz-button-control type="button" [view]="MenuControlTypeEnum.Cancel" label="" moreClass="btn-xs gap-1"
+            (click)="cancelarEdicion(item)" />
+
+          <!--   <button type="button" class="btn btn-xs btn-success" (click)="guardarFila(item)">
+            <ng-icon name="heroCheck" />
+          </button>
+
+          <button type="button" class="btn btn-xs btn-ghost" (click)="cancelarEdicion(item)">
+            <ng-icon name="heroXMark" />
+          </button>
+-->
+
+        </td>
+      </tr>
+
+      } @else {
+      <!-- ← FILA EN LECTURA -->
+      <tr>
+        <td>{{ item.noEtiqueta }}</td>
+        <td>{{ item.noRedSocial }}</td>
+
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.redSocial) {
+        <td>{{ item.noTipoUrl }}</td>
+        }
+
+
+        @if (seccion.coTipo === TIPO_MAESTRO.general.redSocial.items.telefonoMovil) {
+        <td>
+          <input type="checkbox" class="checkbox checkbox-xs" disabled [checked]="item.flWhatsapp === 1" />
+        </td>
+        }
+        <td class="flex gap-1">
+
+
+          <mz-button-control type="button" [view]="MenuControlTypeEnum.Edit" label="" moreClass="btn-xs gap-1"
+            (click)="editarFila(item)" />
+
+          <mz-button-control type="button" [view]="MenuControlTypeEnum.Delete" label="" moreClass="btn-xs gap-1"
+            (click)="eliminarFila(item)" />
+
+          <!--
+          <button type="button" class="btn btn-xs btn-warning" (click)="editarFila(item)">
+            <ng-icon name="heroPencil" />
+          </button>
+          <button type="button" class="btn btn-xs btn-error" (click)="eliminarFila(item)">
+            <ng-icon name="heroTrash" />
+          </button>
+          -->
+        </td>
+      </tr>
+      }
+      }
+
+      @if (getItemsPorTipo(seccion.coTipo).length === 0) {
+      <tr>
+        <td colspan="5" class="text-center text-base-content/40 text-xs py-3">
+          Sin registros. Presione Agregar.
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+}

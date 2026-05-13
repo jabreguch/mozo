@@ -1,0 +1,52 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <label class="label">
+    <input
+      class="checkbox"
+      type="checkbox"
+      [checked]="allChecked()"
+      [indeterminate]="isGlobalIndeterminate()"
+      (change)="selectAll($event.target.checked)"
+    />
+    Seleccionar todo
+  </label>
+  <ul class="menu bg-base-200 rounded-box w-56 mt-3 " formArrayName="menus">
+
+    @for (menu of menus(); let i = $index; track menu.coMenu) {
+
+    <li [formGroupName]="i">
+
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="checkbox" formControlName="flEstReg" class="checkbox" />
+        <span>{{ menu.noMenu }}</span>
+      </div>
+
+      <ul formArrayName="paginas" style="margin-left:20px;">
+
+        @for (pagina of menu.paginaLst; let j = $index; track pagina.coPagina) {
+
+        <li [formGroupName]="j">
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input type="checkbox" formControlName="flEstReg" class="checkbox" />
+            <span>{{ pagina.noOpcion }}</span>
+          </div>
+
+        </li>
+
+        }
+
+      </ul>
+
+    </li>
+
+    }
+
+  </ul>
+
+  <div class="modal-action">
+    <mz-button-control [view]="MenuControlTypeEnum.Cancel" (click)="modalService.close()" />
+    <mz-button-control type="submit" shortcut="ctrl+s" [view]="MenuControlTypeEnum.Save" />
+  </div>
+
+
+</form>

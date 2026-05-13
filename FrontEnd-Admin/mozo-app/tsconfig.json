@@ -1,0 +1,51 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+        "@app/*":["./src/app/*"],
+        "@layout/*":["./src/app/layout/*"],
+
+        "@shared/*":["./src/app/shared/*"],
+        "@sharedModels/*":["./src/app/shared/models/*"],
+        "@sharedComponents/*":["./src/app/shared/components/*"],
+        "@sharedEnum/*":["./src/app/shared/enums/*"],
+        "@sharedPages/*":["./src/app/shared/pages/*"],
+        "@sharedServices/*":["./src/app/shared/services/*"],
+
+        "@module/*":["./src/app/modules/*"],
+        "@moduleSeguridad/*":["./src/app/modules/seguridad/*"],
+        "@moduleMaestro/*":["./src/app/modules/maestro/*"],
+
+    },
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "typeCheckHostBindings": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

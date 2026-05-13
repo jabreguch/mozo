@@ -1,0 +1,106 @@
+<!-- name of each tab group should be unique -->
+<div role="tablist" class="tabs tabs-border">
+  <input role="tab" type="radio" name="tabs" class="tab" aria-label="Principal" [checked]="activeTab() === 1"
+    (change)="activeTab.set(1)" />
+  <div role="tabpanel" class="tab-content bg-base-100 pt-5">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="grid grid-cols-12 gap-4">
+
+
+        @if (logoConfig(); as cfg ) {
+        <div class="col-span-12 md:col-span-12">
+          <mz-file-single [config]="cfg" (cargado)="onLogoCargado($event)" (reemplazado)="onLogoReemplazado($event)"
+            (eliminado)="onLogoEliminado($event)" (errorUpload)="onError($event)" />
+        </div>
+        }
+
+
+        <mz-form-field-control label="Nombre" [colSpan]=8
+          [errorMessage]="getError('noEmpresa') ? 'La nombre de la Empresa es obligatorio.' : null">
+          <input type="text" required maxlength="150" placeholder="Nombre de Empresa" class="input w-full validator"
+            formControlName="noEmpresa" />
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Nombre corto" [colSpan]=4>
+          <input type="text" maxlength="80" placeholder="Nombre corto" class="input w-full validator"
+            formControlName="noEmpresaCorto" />
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Misión">
+          <textarea class="textarea w-full h-28" maxlength="800" placeholder="Misión"
+            formControlName="noMision"></textarea>
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Visión">
+          <textarea class="textarea w-full h-28" maxlength="800" placeholder="Visión"
+            formControlName="noVision"></textarea>
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Quienes somos">
+          <textarea class="textarea w-full h-40" maxlength="800" placeholder="Quienes somos"
+            formControlName="txQuienSoy"></textarea>
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Seo">
+          <textarea class="textarea w-full h-14" maxlength="150" placeholder="Seo" formControlName="noSeo"></textarea>
+        </mz-form-field-control>
+
+
+        <mz-form-field-control [colSpan]=6 label="País">
+          <select class="select select-bordered w-full" formControlName="coPais" (change)="onPaisChange($event)">
+            <option [value]="null" disabled selected>
+              {{ MSG_FIELD_FORM.COMBO_REQUIRED }}
+            </option>
+            @for (item of paises(); track item.coPais) {
+            <option [value]="item.coPais">{{ item.noPais }}</option>
+            }
+          </select>
+        </mz-form-field-control>
+
+        <mz-form-field-control label="Moneda" [readonly]="true" [colSpan]=6>
+          <input type="text" readonly maxlength="50" placeholder="Moneda" class="input w-full" [value]="(selectedPais()?.coMoneda??0) > 0
+        ? selectedPais()?.moneda?.noCodigoIso + ' => ' + selectedPais()?.moneda?.noMoneda
+        : ''" />
+
+        </mz-form-field-control>
+
+        <mz-form-field-control [colSpan]=7 label="Tipo documento">
+          <select class="select select-bordered w-full" formControlName="coDocumentoIdentidad">
+            <option [value]="null" disabled selected>
+              {{ MSG_FIELD_FORM.COMBO_REQUIRED }}
+            </option>
+            @for (item of documentosIndentidades(); track item.coDocumentoIdentidad) {
+            <option [value]="item.coDocumentoIdentidad"> {{ (item.noDocumentoIdentidadSigla == null ? '':
+              item.noDocumentoIdentidadSigla + ' => ') }} {{ item.noDocumentoIdentidad }}</option>
+            }
+          </select>
+        </mz-form-field-control>
+        <mz-form-field-control label="Número documento" [colSpan]=5>
+          <input type="text" maxlength="20" placeholder="Número documento" class="input w-full"
+            formControlName="nuDocumentoFiscal" />
+        </mz-form-field-control>
+      </div>
+
+      <div class="modal-action">
+        <mz-button-control [view]="MenuControlTypeEnum.Cancel" (click)="modalService.close()" />
+        <mz-button-control type="submit" shortcut="ctrl+s" [view]="MenuControlTypeEnum.Save" />
+      </div>
+    </form>
+  </div>
+
+  <input [disabled]="!model() || !model()?.coEmpresa" role="tab" type="radio" name="tabs" class="tab"
+    aria-label="Módulos" [checked]="activeTab() === 2" (change)="activeTab.set(2)" />
+  <div role="tabpanel" class="tab-content bg-base-100 pt-1">
+    <mz-empresa-modulo-form-page #empresaModuloFormPage [data]="model() ?? null" />
+  </div>
+
+  <input [disabled]="!model() || !model()?.coEmpresa" role="tab" type="radio" name="tabs" class="tab"
+    aria-label="Contacto" [checked]="activeTab() === 3" (change)="activeTab.set(3)" />
+  <div role="tabpanel" class="tab-content bg-base-100 pt-1">
+    <mz-red-social-form-page #redSocialFormPage [data]="model() ?? null" />
+  </div>
+
+
+</div>
+
+

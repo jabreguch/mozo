@@ -1,0 +1,55 @@
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Mantenimiento de Menus</h1>
+  <mz-button-control type="submit" label="Nuevo" [view]="MenuControlTypeEnum.New"
+    (click)="onMenuAction('insert', null)" />
+</div>
+
+<div class="grid grid-cols-1 gap-4">
+  <mz-form-field-control label="Módulo">
+    <select class="select select-bordered w-full" [ngModel]="selectedModulo()" (ngModelChange)="onModuloChange($event)">
+      <option [value]="null" disabled selected>
+        {{ MSG_FIELD_FORM.COMBO_REQUIRED }}
+      </option>
+      @for (item of modulos(); track item.coModulo) {
+      <option [value]="item.coModulo">{{ item.noModulo }}</option>
+      }
+    </select>
+  </mz-form-field-control>
+</div>
+@if(menus().length > 0 ) {
+<ul class="menu bg-base-200 rounded-box w-56 mt-3 ">
+  @for (menu of menus(); track menu.coMenu) {
+  <li>
+    <div>
+      <div>{{ menu.nuOrden }}</div>
+      <div><mz-state-control [state]="menu.flEstReg == 1 ? 1 : 0" /> {{ menu.noMenu }}</div>
+      <div><mz-menu-control [items]="menuItems" [state]="menu.flEstReg ?? null" (action)="onMenuAction($event, menu)" />
+      </div>
+    </div>
+
+    @if((menu.paginaLst?.length ?? 0) > 0) {
+    <ul>
+      @for (pagina of menu.paginaLst; track pagina.coPagina) {
+      <li>
+        <div>
+          <div>{{ pagina.nuOrden }}</div>
+          <div><mz-state-control [state]="pagina.flEstReg == 1 ? 1 : 0" /> {{ pagina.noOpcion }} </div>
+          <div><mz-menu-control [items]="menuPaginaItems" [state]="pagina.flEstReg ?? null"
+              (action)="onMenuPaginaAction($event,menu, pagina)" /></div>
+        </div>
+      </li>
+      }
+    </ul>
+    }
+  </li>
+  }
+</ul>
+}
+
+<mz-modal-control name="menu-form-page-modal" #menuFormPageModal>
+  <mz-menu-form-page (saved)="onSaved()" [data]="menuFormPageModal.data$()" />
+</mz-modal-control>
+
+<mz-modal-control name="pagina-form-page-modal" #paginaFormPageModal>
+  <mz-pagina-form-page (saved)="onSaved()" [data]="paginaFormPageModal.data$()" />
+</mz-modal-control>

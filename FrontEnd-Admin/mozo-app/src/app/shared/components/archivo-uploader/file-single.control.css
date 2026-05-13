@@ -1,0 +1,281 @@
+.archivo-single {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.archivo-label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* ===== Estado Cargando ===== */
+.estado-cargando {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Drop Zone ===== */
+.drop-zone {
+  display: block;
+  cursor: pointer;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 24px 16px;
+  background: #f9fafb;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.drop-zone:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.drop-zone.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.upload-icon {
+  width: 36px;
+  height: 36px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.drop-zone:hover .upload-icon {
+  color: #3b82f6;
+}
+
+.drop-zone.drag-over {
+  border-color: var(--primary-color, #007bff);
+  background-color: rgba(0, 123, 255, 0.05);
+  transform: scale(1.02);
+}
+
+.drop-zone.drag-over .upload-icon {
+  color: var(--primary-color, #007bff);
+  transform: scale(1.1);
+}
+.placeholder {
+  margin: 0;
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ===== Archivo Card ===== */
+.archivo-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.archivo-card:hover {
+  border-color: #d1d5db;
+}
+
+/* ===== Preview ===== */
+.preview-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f3f4f6;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icono-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.icono-grande {
+  font-size: 28px;
+}
+
+.extension {
+  font-size: 9px;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Info ===== */
+.archivo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.archivo-nombre {
+  font-weight: 500;
+  color: #111827;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.archivo-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.separador {
+  color: #d1d5db;
+}
+
+/* ===== Progreso ===== */
+.progreso-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.progreso-info {
+  font-size: 11px;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.progreso {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progreso-barra {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 0.3s ease-out;
+}
+
+/* ===== Acciones ===== */
+.acciones {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.15s;
+  color: #4b5563;
+}
+
+.btn-icon:hover {
+  background: #f3f4f6;
+  transform: scale(1.05);
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
+.btn-icon.btn-eliminar:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ===== Mensaje de error ===== */
+.mensaje-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 4px;
+  opacity: 0.6;
+}
+
+.btn-link:hover {
+  opacity: 1;
+}
+
+/* ===== Estados ===== */
+.archivo-single.readonly .archivo-card {
+  background: #f9fafb;
+  opacity: 0.85;
+}
+
+.archivo-single.has-error .archivo-card {
+  border-color: #fecaca;
+}

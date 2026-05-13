@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  
+  </PropertyGroup>
+
+
+  
+  <ItemGroup>
+   
+    <Compile Remove="Control\**" />
+   
+    <Compile Remove="Interfaces\**" />
+   
+    <Compile Remove="Inventario\Plugin\**" />
+   
+    <Compile Remove="Maestro\Plugin\**" />
+   
+    <Compile Remove="Plugin\**" />
+   
+    <EmbeddedResource Remove="Interfaces\**" />
+   
+    <EmbeddedResource Remove="Inventario\Plugin\**" />
+   
+    <EmbeddedResource Remove="Maestro\Plugin\**" />
+   
+    <EmbeddedResource Remove="Plugin\**" />
+    <None Remove="Control\**" />
+    <None Remove="Interfaces\**" />
+    <None Remove="Inventario\Plugin\**" />
+    <None Remove="Maestro\Plugin\**" />
+    <None Remove="Plugin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="BaseDto.cs" />
+    <Compile Remove="Condominio\ConsumoMovimientoModel.cs" />
+    <Compile Remove="Condominio\ServicioCalculoModel.cs" />
+    <Compile Remove="ConfigurationModel.cs" />
+    <Compile Remove="Facturacion\FilterModel.cs" />
+    <Compile Remove="FileMergeModel.cs" />
+    <Compile Remove="Inventario\FilterModel.cs" />
+    <Compile Remove="Maestro\FilterModel.cs" />
+    <Compile Remove="Matricula\MatriculaCicloModel.cs" />
+    <Compile Remove="PagingModelBase.cs" />
+    <Compile Remove="Seguridad\Auth\TokenModel.cs" />
+    <Compile Remove="Seguridad\Auth\UserContext.cs" />
+    <Compile Remove="Seguridad\FilterModel.cs" />
+    <Compile Remove="Seguridad\GlobalMenuModel.cs" />
+    <Compile Remove="UploadModel.cs" />
+    <Compile Remove="Urbano\FilterModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Control\ButtonModel.cs" />
+    <Compile Include="Control\GridModel.cs" />
+    <Compile Include="Control\ComponentModel.cs" />
+    <Compile Include="Control\ModalModel.cs" />
+    <Compile Include="Interfaces\IBaseFilterModel.cs" />
+    <Compile Include="Interfaces\IBaseEntityModel.cs" />
+    <Compile Include="Interfaces\IBasePaginationModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mozo.Helper\Mozo.Helper.csproj" />
+  </ItemGroup>
+
+</Project>

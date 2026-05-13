@@ -1,0 +1,35 @@
+<div class="dropdown dropdown-end">
+  <button
+    type="button"
+    tabindex="0"
+    class="btn btn-sm btn-ghost btn-square"
+    aria-label="Abrir menú de opciones">
+    <ng-icon name="lucideMoreVertical" class="text-lg"/>
+  </button>
+
+  <ul
+    tabindex="0"
+    class="dropdown-content menu z-50 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow"
+    role="menu">
+
+    @for (item of enrichedItems(); track item.type) {
+    <li role="none">
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-lg"
+        (click)="onAction(item)"
+        (keydown.enter)="onAction(item)"
+        (keydown.space)="$event.preventDefault(); onAction(item)"
+        [attr.aria-label]="item.label"
+        role="menuitem">
+        <ng-icon
+          [name]="item.icon"
+          [ngClass]="item.color"
+          class="text-base"
+          aria-hidden="true" />
+        <span [ngClass]="item.color">{{ item.label }}</span>
+      </button>
+    </li>
+    }
+  </ul>
+</div>

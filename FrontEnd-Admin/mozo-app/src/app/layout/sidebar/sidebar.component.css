@@ -1,0 +1,17 @@
+details summary {
+  list-style: none;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+.drawer-side .menu li > details > summary::after {
+  margin-left: auto;
+}
+
+.is-drawer-close .menu details > ul {
+  display: none;
+}
+
+

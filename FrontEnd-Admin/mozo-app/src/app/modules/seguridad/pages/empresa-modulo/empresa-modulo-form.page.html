@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <table formArrayName="modulos" class="table table-zebra">
+    <tbody>
+      @for (empresaModulo of empresaModulos(); track empresaModulo.coModulo; let i = $index) {
+      <tr [formGroupName]="i">
+        <td>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input type="checkbox" class="checkbox" formControlName="flEstReg" />
+            <span>{{ empresaModulo.noModulo }}</span>
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  <div class="modal-action">
+    <mz-button-control type="submit" shortcut="ctrl+s" [view]="MenuControlTypeEnum.Save" />
+  </div>
+</form>

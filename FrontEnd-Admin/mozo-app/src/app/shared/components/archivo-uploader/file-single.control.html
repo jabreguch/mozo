@@ -1,0 +1,124 @@
+<!-- src/app/shared/components/archivo-single/archivo-single.component.html -->
+<div class="archivo-single" [class.readonly]="config().readonly" [class.has-error]="estado() === 'error'">
+
+  @if (config().label) {
+  <label class="archivo-label">{{ config().label }}</label>
+  }
+
+  @switch (estado()) {
+
+  @case ('cargando') {
+  <div class="estado-cargando">
+    <div class="spinner"></div>
+    <span>Cargando archivo...</span>
+  </div>
+  }
+
+  @case ('vacio') {
+  <!-- Drop zone vacío -->
+  <label class="drop-zone" [class.disabled]="config().readonly" [class.drag-over]="dragOver()"
+    (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+    <input type="file" [accept]="config().accept" [disabled]="config().readonly" (change)="onFileSelect($event)"
+      hidden />
+
+    <div class="drop-zone-content">
+      <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
+      <p class="placeholder">
+        {{ dragOver() ? 'Suelta el archivo aquí' : 'Click o arrastra archivo aquí' }}
+      </p>
+      <p class="hint">
+        Máximo {{ config().maxSizeMB }} MB
+      </p>
+    </div>
+  </label>
+  }
+
+  @default {
+  <!-- Archivo presente, subiendo o reemplazando -->
+  <div class="archivo-card">
+
+    <!-- Preview -->
+    <div class="preview-wrap">
+      @if (esImagen() && urlPreview()) {
+      <img [src]="urlPreview()" [alt]="archivo()?.noTitulo || 'archivo'" loading="lazy" />
+      } @else {
+      <div class="icono-wrap">
+        <span class="icono-grande">{{ iconoPorExtension() }}</span>
+        @if (archivo()?.noExtension) {
+        <span class="extension">{{ archivo()!.noExtension!.replace('.', '') }}</span>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Info -->
+    <div class="archivo-info">
+      @if (archivo()) {
+      <span class="archivo-nombre" [title]="archivo()!.noArchivo">
+        {{ archivo()!.noArchivo }}
+      </span>
+      <div class="archivo-meta">
+        <span class="archivo-bytes">{{ formatearBytes(archivo()!.nuBytes) }}</span>
+        @if (archivo()!.nuAncho && archivo()!.nuAlto) {
+        <span class="separador">•</span>
+        <span class="dimensiones">
+          {{ archivo()!.nuAncho }} × {{ archivo()!.nuAlto }} px
+        </span>
+        }
+      </div>
+      }
+
+      <!-- Progreso -->
+      @if (procesando()) {
+      <div class="progreso-wrap">
+        <div class="progreso-info">
+          @if (estado() === 'subiendo') {
+          <span>⬆ Subiendo {{ progreso() }}%</span>
+          }
+          @if (estado() === 'reemplazando') {
+          <span>🔄 Reemplazando {{ progreso() }}%</span>
+          }
+        </div>
+        <div class="progreso">
+          <div class="progreso-barra" [style.width.%]="progreso()"></div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Acciones -->
+    @if (!config().readonly && !procesando() && archivo()) {
+    <div class="acciones">
+      <label class="btn-icon" title="Reemplazar">
+        <input type="file" [accept]="config().accept" (change)="onFileSelect($event)" hidden />
+        🔄
+      </label>
+
+      <a [href]="storageUrl(archivo()!.url)" target="_blank" class="btn-icon" title="Ver">
+        👁️
+      </a>
+
+      <button type="button" class="btn-icon btn-eliminar" (click)="eliminar()" title="Eliminar">
+        🗑
+      </button>
+    </div>
+    }
+  </div>
+  }
+  }
+
+  <!-- Mensaje de error -->
+  @if (mensaje() && estado() === 'error') {
+  <div class="mensaje-error">
+    <span>⚠ {{ mensaje() }}</span>
+    <button type="button" class="btn-link" (click)="estado.set(tieneArchivo() ? 'completo' : 'vacio'); mensaje.set('')">
+      ✕
+    </button>
+  </div>
+  }
+</div>

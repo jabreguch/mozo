@@ -1,0 +1,46 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div class="grid grid-cols-12 gap-4">
+
+    <mz-form-field-control label="Orden" [colSpan]="2" [errorMessage]="getError('nuOrden') ? 'El orden es obligatorio.' : null">
+      <input type="number" required maxlength="2" placeholder="Orden" class="input w-full validator" formControlName="nuOrden" id="nuOrden" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Nombre" [colSpan]="5"
+      [errorMessage]="getError('noModulo') ? 'El Módulo es obligatorio.' : null">
+      <input type="text" maxlength="30" required placeholder="Nombre" class="input w-full validator" formControlName="noModulo" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Área" [colSpan]="5">
+      <input type="text" maxlength="20" placeholder="Área" class="input w-full" formControlName="noArea" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Icono" [colSpan]="6">
+      <input type="text" maxlength="60" placeholder="Icono" class="input w-full" formControlName="noIcono" />
+    </mz-form-field-control>
+
+    <mz-form-field-control label="Descripción">
+      <textarea class="textarea w-full h-24" maxlength="200" placeholder="Descripción" formControlName="noModuloDescripcion"></textarea>
+    </mz-form-field-control>
+
+    <div>
+      <label class="label cursor-pointer justify-start gap-3">
+        <span class="label-text">Es área</span>
+        <input type="checkbox" class="toggle toggle-primary" formControlName="flArea">
+      </label>
+    </div>
+  </div>
+
+
+  <div class="modal-action">
+      <mz-button-control
+        [view]="MenuControlTypeEnum.Cancel"
+        (click)="modalService.close()"
+      />
+      <mz-button-control
+        type="submit"
+        shortcut="ctrl+s"
+        [view]="MenuControlTypeEnum.Save"
+      />
+  </div>
+
+</form>
