@@ -234,7 +234,10 @@ if (Directory.Exists(storageOpts.FolderDocument))
 
 
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+   app.UseHttpsRedirection();
+}
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseExceptionHandler();
