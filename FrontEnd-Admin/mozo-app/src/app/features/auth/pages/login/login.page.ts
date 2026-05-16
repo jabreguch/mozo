@@ -11,7 +11,6 @@ import { FormModalBase } from '@app/shared/components/form/form-modal-base';
 import { ModalPayload } from '@app/shared/models/controls/modal-control.model';
 import { TipoArchivoCatalogoService } from '@app/core/services/tipo-archivo-catalogo.service';
 import { from } from 'rxjs';
-import { ModuloUsuarioModel } from '@app/shared/models/seguridad/modulo-usuario.model';
 
 @Component({
   selector: 'mz-login-page',
