@@ -1,6 +1,6 @@
 [build]
   command = "npm run build -- --configuration production"
-  publish = "dist/mozo-app"
+  publish = "dist/mozo-app/browser"
 
 [[redirects]]
   from = "/*"
