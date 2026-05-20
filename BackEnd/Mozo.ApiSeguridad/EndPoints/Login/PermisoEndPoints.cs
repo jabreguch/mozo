@@ -53,9 +53,12 @@ public static partial class PermisoEndPoints
             [FromBody] PermisoFilterDto f,
             IConfiguration configuration,
             IPermisoBusiness IPermiso,
-            IIngresoBusiness IIngreso
+            IIngresoBusiness IIngreso,
+            ILoggerFactory loggerFactory
         )
     {
+        var logger = loggerFactory.CreateLogger("Mozo.Api.Login");
+
 
         if (f == null)
             throw new ArgumentNullException(nameof(f));
@@ -73,7 +76,16 @@ public static partial class PermisoEndPoints
 
         PermisoModel? permiso = await IPermiso.SelByUserAsync(f);
         if (permiso == null)
+        {
+
+
+            logger.LogWarning(
+           "[SECURITY] LOGIN_FAILED | Usuario: {Usuario} | IP: {IP}",
+           f.NoUsuario, f.NoIp);
+
             throw new NotFoundException("Usuario o contraseña incorrectos");
+        }
+
 
 
         noTokenRefresh = UtilityJwt.GenerateRefreshToken();
@@ -100,11 +112,16 @@ public static partial class PermisoEndPoints
         };
 
         string token = UtilityJwt.GenerateToken(credential, configuration);
-        //credential.FeExpiration = r.Item2;
+
 
         globalCredencial.Credencial = credential;
         globalCredencial.NoToken = token;
         globalCredencial.NoTokenRefresh = noTokenRefresh;
+
+
+        logger.LogInformation(
+     "[SECURITY] LOGIN_SUCCESS | Usuario: {Usuario} | Empresa: {CoEmpresa} | IP: {IP}",
+     permiso.NoUsuario, permiso.CoEmpresa, f.NoIp);
 
         return Results.Ok(globalCredencial);
     }

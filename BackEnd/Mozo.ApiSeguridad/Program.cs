@@ -13,18 +13,45 @@ using Mozo.CatalogoComposition;
 using Mozo.Helper.Global;
 using Mozo.Helper.Services;
 using Mozo.Helper.Services.Storage;
-
-
-//using Mozo.ApiSeguridad.EndPoint.Login;
 using Mozo.HelperWeb.Token;
 using Mozo.LoginComposition;
 
 using Mozo.MaestroComposition;
 using Mozo.SeguridadComposition;
-
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
 using System.IO.Compression;
 using System.Text.Json.Serialization;
+
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .Enrich.WithExceptionDetails()
+    .Enrich.WithMachineName()
+    .Enrich.WithEnvironmentName()
+    .Enrich.WithProperty("Application", "Mozo.Api")
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}")
+    .WriteTo.File(
+        path: "logs/mozo-api-.log",
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}",
+        retainedFileCountLimit: 30,
+        fileSizeLimitBytes: 10_485_760) // 10MB
+    .CreateLogger();
+
+
+Log.Information("=== Iniciando Mozo API ===");
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// ✅ Usar Serilog como proveedor de logging
+builder.Host.UseSerilog();
 
 #region Servicios
 
@@ -47,7 +74,6 @@ Directory.CreateDirectory(storage["FolderResource"]!);
 Directory.CreateDirectory(storage["FolderTemporary"]!);
 
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddEndpointsMetadataProviderApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -81,23 +107,7 @@ builder.Services.AddSwaggerGen(c =>
 
     c.OperationFilter<AuthorizationFilterSwagger>();
 
-    //c.ParameterFilter<ParameterFilter>();
 
-    /*
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                }, new string[]{}
-            }
-        });
-    */
 });
 
 
@@ -117,25 +127,16 @@ builder.Services.AddAuthentication().AddJwtBearer(opt =>
 
 });
 builder.Services.AddAuthorization();
-//builder.Services.AddAntiforgery();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-//builder.Services.AddProblemDetails();
+
 builder.Services.AddCustomProblemDetails();
 
 builder.Services.AddScoped<Authentication>();
 
 builder.Services.AddOutputCache(); // Para las consultas que no cambian mucho
 
-//builder.Services.AddScoped<IAlmacenaArchivo, AlmacenaArchivo>();
 
-//builder.Services.AddScoped<UserClaims, FromClaimsBinder>();
-//builder.Services.AddScoped<UserClaims, UserContext>();
-//builder.Services.AddScoped<UserClaims>(sp =>
-//{
-//    HttpContext http = sp.GetRequiredService<IHttpContextAccessor>().HttpContext!;
-//    return new UserContext(http!.User);
-//});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -206,6 +207,9 @@ builder.Services.AddScoped<IImageProcessor, ImageProcessor>();
 builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
 
+
+
+
 #endregion
 
 
@@ -214,6 +218,9 @@ WebApplication app = builder.Build();
 #region Middleware
 
 app.UseResponseCompression();
+
+// ✅ AGREGAR: Request Logging (DEBE IR ANTES de UseExceptionHandler)
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 StorageOptions storageOpts = app.Services
     .GetRequiredService<IOptions<StorageOptions>>().Value;

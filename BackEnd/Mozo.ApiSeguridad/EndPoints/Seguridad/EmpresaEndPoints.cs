@@ -14,6 +14,7 @@ namespace Mozo.Api.Seguridad;
 ///</history>
 public static partial class EmpresaEndPoints
 {
+    private const string CacheTag = "Empresa_SelAllActive";
     /// <summary>
     /// Mapea todas las rutas de Empresa
     /// </summary>
@@ -47,7 +48,7 @@ public static partial class EmpresaEndPoints
             .WithDescription("Obtener todas las Empresas");
 
         g.MapGet("/active", SelAllActiveAsync)
-            .CacheOutput(x => x.Expire(TimeSpan.FromHours(24)).Tag("Empresa_SelAllActive"))
+            .CacheOutput(x => x.Expire(TimeSpan.FromHours(24)).Tag(CacheTag))
             .WithResponses<IEnumerable<EmpresaModel>>(StatusCodes.Status200OK)
             .WithDescription("Obtener todas las Empresas activas");
 
@@ -62,12 +63,12 @@ public static partial class EmpresaEndPoints
     private static async Task<IResult>
          InsertAsync(
              EmpresaModel m,
-             IOutputCacheStore outputCacheStore,
+             IOutputCacheStore cacheStore,
              IEmpresaBusiness IEmpresa
       )
     {
         m.CoEmpresa = await IEmpresa.InsertAsync(m);
-        await outputCacheStore.EvictByTagAsync("Empresa_SelAllActive", default);
+        await cacheStore.InvalidateCacheAsync(CacheTag);
         return Results.Created($"/{m.CoEmpresa}", m.CoEmpresa);
     }
 
@@ -75,13 +76,13 @@ public static partial class EmpresaEndPoints
     private static async Task<IResult>
         UpdateAsync(
             EmpresaModel m,
-            IOutputCacheStore outputCacheStore,
+            IOutputCacheStore cacheStore,
             IEmpresaBusiness IEmpresa
      )
     {
 
         await IEmpresa.UpdateAsync(m);
-        await outputCacheStore.EvictByTagAsync("Empresa_SelAllActive", default);
+        await cacheStore.InvalidateCacheAsync(CacheTag);
         return Results.Ok(m.CoEmpresa);
     }
 
@@ -89,12 +90,12 @@ public static partial class EmpresaEndPoints
         UpdateStateAsync(
             EmpresaModel m,
             IEmpresaBusiness IEmpresa,
-            IOutputCacheStore outputCacheStore
+            IOutputCacheStore cacheStore
             )
     {
 
         await IEmpresa.UpdateStateAsync(m);
-        await outputCacheStore.EvictByTagAsync("Empresa_SelAllActive", default);
+        await cacheStore.InvalidateCacheAsync(CacheTag);
         return Results.Ok(m.CoEmpresa);
     }
 
@@ -102,11 +103,11 @@ public static partial class EmpresaEndPoints
         DeleteByIdAsync(
              [AsParameters] EmpresaFilterDto f,
             IEmpresaBusiness IEmpresa,
-            IOutputCacheStore outputCacheStore
+            IOutputCacheStore cacheStore
       )
     {
         await IEmpresa.DeleteByIdAsync(f);
-        await outputCacheStore.EvictByTagAsync("Empresa_SelAllActive", default);
+        await cacheStore.InvalidateCacheAsync(CacheTag);
         return Results.NoContent();
     }
 

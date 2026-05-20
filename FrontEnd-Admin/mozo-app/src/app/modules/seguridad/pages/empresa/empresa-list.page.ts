@@ -16,6 +16,7 @@ import { EmpresaService } from '../../services/empresa.service';
 import { PaginationControl } from "@app/shared/components/pagination/pagination.control";
 import { EmpresaModuloService } from '../../services/empresa-modulo.service';
 import { EmpresaModuloModel } from '@app/shared/models/seguridad/empresa-modulo.model';
+import { GenericGridCControl } from "@app/shared/components/grid/grid.control";
 
 
 @Component({
@@ -23,7 +24,7 @@ import { EmpresaModuloModel } from '@app/shared/models/seguridad/empresa-modulo.
   standalone: true,
   templateUrl: './empresa-list.page.html',
   styleUrl: './empresa-list.page.css',
-  imports: [MenuControl, ModalControl, StateControl, ButtonControl, EmpresaFormPage, PaginationControl],
+  imports: [MenuControl, ModalControl, StateControl, ButtonControl, EmpresaFormPage, PaginationControl, GenericGridCControl],
 })
 
 export class EmpresaListPage implements OnInit {

@@ -2,21 +2,35 @@
   <button
     type="button"
     tabindex="0"
-    class="btn btn-sm btn-ghost btn-square"
+    class="btn btn-ghost btn-square btn-md lg:btn-sm touch-manipulation"
     aria-label="Abrir menú de opciones">
-    <ng-icon name="lucideMoreVertical" class="text-lg"/>
+    <ng-icon name="lucideMoreVertical" class="text-lg lg:text-lg"/>
   </button>
 
   <ul
     tabindex="0"
-    class="dropdown-content menu z-50 w-56 rounded-box border border-base-300 bg-base-100 p-2 shadow"
+    class="dropdown-content menu z-50 
+    w-64 lg:w-56
+           rounded-box 
+           border-2 lg:border 
+           border-base-300 
+           bg-base-100 
+           p-3 lg:p-2 
+           shadow-2xl lg:shadow"
     role="menu">
 
     @for (item of enrichedItems(); track item.type) {
     <li role="none">
       <button
         type="button"
-        class="flex items-center gap-3 rounded-lg"
+        class="flex items-center gap-3 
+         rounded-lg 
+               py-3 lg:py-2
+               px-4 lg:px-3
+               text-base lg:text-sm
+               active:scale-95
+               transition-transform
+               touch-manipulation"
         (click)="onAction(item)"
         (keydown.enter)="onAction(item)"
         (keydown.space)="$event.preventDefault(); onAction(item)"
@@ -25,9 +39,9 @@
         <ng-icon
           [name]="item.icon"
           [ngClass]="item.color"
-          class="text-base"
+          class="text-xl lg:text-base flex-shrink-0"
           aria-hidden="true" />
-        <span [ngClass]="item.color">{{ item.label }}</span>
+        <span [ngClass]="item.color" class="font-medium lg:font-normal">{{ item.label }}</span>
       </button>
     </li>
     }

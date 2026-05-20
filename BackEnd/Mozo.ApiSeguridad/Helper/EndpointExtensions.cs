@@ -1,10 +1,20 @@
-﻿namespace Mozo.ApiSeguridad.Helper;
+﻿using Microsoft.AspNetCore.OutputCaching;
+
+namespace Mozo.ApiSeguridad.Helper;
 
 /// <summary>
 /// Clase utilitaria de End Points
 /// </summary>
 public static class EndpointExtensions
 {
+    // Prefijos centralizados para fácil mantenimiento
+    private static readonly string[] NamespacePrefixes =
+    {
+        "Mozo.ApiSeguridad.",
+        "Mozo.ApiMaestro.",
+        "Mozo.ApiLogin.",
+        "Mozo.Api."
+    };
 
     /// <summary>
     /// Para clases estáticas: recibe el <see cref="Type"/> explícito.
@@ -15,66 +25,54 @@ public static class EndpointExtensions
         Type endpointType,
         Action<RouteGroupBuilder> mapAction)
     {
-        if (endpointType == null) throw new ArgumentNullException(nameof(endpointType));
+        ArgumentNullException.ThrowIfNull(endpointType);
 
-        string ns = endpointType.Namespace!;
-        // Quitar prefijos del namespace
-        if (ns.StartsWith("Mozo.Api."))
-            ns = ns["Mozo.Api.".Length..];
+        string cleanNamespace = RemoveNamespacePrefixes(endpointType.Namespace ?? "General");
+        string className = endpointType.Name.Replace("EndPoints", "", StringComparison.Ordinal);
+        string tag = $"{cleanNamespace} - {className}";
 
-        string tag = $"{ns} - {endpointType.Name.Replace("EndPoints", "")}";
-        RouteGroupBuilder g = app.MapGroup(prefix).WithTags(tag);
-        mapAction(g);
-        return g;
+        RouteGroupBuilder group = app.MapGroup(prefix).WithTags(tag);
+        mapAction(group);
+        return group;
     }
 
     /// <summary>
-    /// Para clases estáticas: recibe el <see cref="Type"/> explícito.
+    /// Genera un tag a partir del namespace y nombre de clase del tipo especificado.
     /// </summary>
-    public static string FromNamespaceAndClass(Type t)
+    public static string FromNamespaceAndClass(Type type)
     {
-        string ns = t.Namespace ?? "General";
+        ArgumentNullException.ThrowIfNull(type);
 
-        // Quitar prefijos del namespace
-        if (ns.StartsWith("Mozo.ApiSeguridad."))
-            ns = ns["Mozo.ApiSeguridad.".Length..];
-        else if (ns.StartsWith("Mozo.ApiMaestro."))
-            ns = ns["Mozo.ApiMaestro.".Length..];
-        else if (ns.StartsWith("Mozo.ApiLogin."))
-            ns = ns["Mozo.ApiLogin.".Length..];
+        string cleanNamespace = RemoveNamespacePrefixes(type.Namespace ?? "General");
+        string formattedNamespace = cleanNamespace.Replace(".", " / ", StringComparison.Ordinal);
 
-        //
-
-        // Tomar también el nombre de la clase
-        string className = t.Name;//.Replace("Endpoints", "");
-
-        return $"{ns.Replace(".", " / ")} - {className}";
+        return $"{formattedNamespace} - {type.Name}";
     }
 
     /// <summary>
-    /// Configuración estándar de respuestas para tipos referencia (400, 401)
+    /// Configuración estándar de respuestas para tipos referencia (200/201/204, 400, 401)
     /// </summary>
     public static RouteHandlerBuilder WithResponses<T>(
         this RouteHandlerBuilder builder,
         int successCode) where T : class
     {
-        builder.Produces<T>(successCode)
-            .Produces(StatusCodes.Status400BadRequest);
-        // .Produces(StatusCodes.Status401Unauthorized);
-        return builder;
+        return builder
+            .Produces<T>(successCode)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized);
     }
 
     /// <summary>
-    /// Configuración estándar de respuestas para tipos valor como int (400, 401)
+    /// Configuración estándar de respuestas para tipos valor (200/201, 400, 401)
     /// </summary>
     public static RouteHandlerBuilder WithResponsesValue<T>(
         this RouteHandlerBuilder builder,
         int successCode) where T : struct
     {
-        builder.Produces<T>(successCode)
+        return builder
+            .Produces<T>(successCode)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized);
-        return builder;
     }
 
     /// <summary>
@@ -84,20 +82,42 @@ public static class EndpointExtensions
         this RouteHandlerBuilder builder,
         int successCode)
     {
-        builder.Produces(successCode)
+        return builder
+            .Produces(successCode)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized);
-        return builder;
     }
 
     /// <summary>
-    /// Configuración estándar para grupo de rutas
+    /// Configuración estándar para grupo de rutas con seguridad
     /// </summary>
-    public static RouteGroupBuilder WithSecurity(
-        this RouteGroupBuilder group)
+    public static RouteGroupBuilder WithSecurity(this RouteGroupBuilder group)
     {
-        return group.DisableAntiforgery().RequireAuthorization();
+        return group
+            .DisableAntiforgery()
+            .RequireAuthorization();
     }
 
+    /// <summary>
+    /// Remueve los prefijos conocidos del namespace
+    /// </summary>
+    private static string RemoveNamespacePrefixes(string namespaceName)
+    {
+        foreach (string prefix in NamespacePrefixes)
+        {
+            if (namespaceName.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                return namespaceName[prefix.Length..];
+            }
+        }
+        return namespaceName;
+    }
 
+    /// <summary>
+    /// Remueve el cache
+    /// </summary>
+    public static async Task InvalidateCacheAsync(this IOutputCacheStore cacheStore, string CacheTag)
+    {
+        await cacheStore.EvictByTagAsync(CacheTag, default);
+    }
 }

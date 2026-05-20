@@ -11,9 +11,8 @@ public class AuthorizationFilterSwagger : IOperationFilter
     {
         if (!context.ApiDescription.ActionDescriptor.EndpointMetadata
                 .OfType<AuthorizeAttribute>().Any())
-            return;
-
-        // ✅ .NET 10 / Microsoft.OpenApi 2.x: se usa OpenApiSecuritySchemeReference como clave
+           return;
+      
         var securityRequirement = new OpenApiSecurityRequirement
         {
             {
